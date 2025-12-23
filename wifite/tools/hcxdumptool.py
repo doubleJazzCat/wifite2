@@ -101,10 +101,13 @@ class HcxDumpTool(Dependency):
 
         # Add channel if specified (must include band suffix for v7.x: 1a, 6a, 11a, etc.)
         if self.channel:
-            # Add band suffix 'a' for 2.4GHz (most common)
+            # Add band suffix 'a' for 2.4GHz (most common) And 'b' for 5GHz
             channel_str = str(self.channel)
-            if not channel_str[-1].isalpha():
-                channel_str += 'a'  # Default to 2.4GHz band
+            if channel_str.isdigit():
+                if int(chan_str) <= 14:
+                    channel_str += 'a'  # Default to 2.4GHz band
+                else:
+                    channel_str += 'b'  # Default to 5GHz band
             command.extend(['-c', channel_str])
 
         # Note: hcxdumptool 7.x removed --filterlist_ap option
